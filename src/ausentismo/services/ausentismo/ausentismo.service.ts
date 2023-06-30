@@ -49,10 +49,12 @@ export class AusentismoService {
         }
 
         const result  = await this.ausentismoRepository.save(ausentismoEntity);
-        const fileName:string = await this.fileService.saveFileS3(file)
-        if(! fileName) return result;
-        const document = {ausentismoId:result.id,empleadoDocumento:ausentismo.documentoEmpleado,pathDocumento:fileName}
-        await this.ausentismoDocRepository.save(document);
+        if(file){
+            const fileName:string = await this.fileService.saveFileS3(file)
+            if(! fileName) return result;
+            const document = {ausentismoId:result.id,empleadoDocumento:ausentismo.documentoEmpleado,pathDocumento:fileName}
+            await this.ausentismoDocRepository.save(document);
+        }
         return result
     }   
 
