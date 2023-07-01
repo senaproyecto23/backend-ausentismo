@@ -29,11 +29,11 @@ export class AusentismoService {
 
         let ausentismoDB = await this.ausentismoRepository.findOne({where:{empleadoDocumento:ausentismo.documentoEmpleado, estado:Estados.PENDIENTE, activo:true}});
  
-        if( ausentismoDB ) throw new HttpException(' ya existe un certificado pendiente', HttpStatus.BAD_REQUEST);
+        if( ausentismoDB ) throw new HttpException('Ya existe un certificado pendiente', HttpStatus.BAD_REQUEST);
 
         ausentismoDB = await this.ausentismoRepository.findOne({where:{empleadoDocumento:ausentismo.documentoEmpleado,fechaInicio:ausentismo.fechaInicio, activo:true}});
  
-        if( ausentismoDB ) throw new HttpException(' ya existe un certificado para esa fecha', HttpStatus.BAD_REQUEST);
+        if( ausentismoDB ) throw new HttpException('Ya existe un certificado para esa fecha', HttpStatus.BAD_REQUEST);
  
         const ausentismoEntity:AusentismoEntity = {
             fechaInicio: ausentismo.fechaInicio,

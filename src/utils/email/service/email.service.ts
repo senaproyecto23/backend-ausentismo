@@ -33,7 +33,7 @@ export class EmailService {
               return dataResponse;
         } catch (error) {
             console.log({error})
-            throw new HttpException('Oupss ocurrio un error enviando el email!!', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException('Ocurrió un error intenta más tarde', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -60,7 +60,7 @@ export class EmailService {
               return dataResponse;
         } catch (error) {
             console.log({error})
-            throw new HttpException('Oupss ocurrio un error enviando el email!!', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException('Ocurrió un error intenta más tarde', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

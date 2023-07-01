@@ -57,7 +57,7 @@ export class EmpleadosController {
     @Post('update')
     async update(@Body()  empleadoDto:EmpleadoDto){
       const result = await this.empleadosService.update(empleadoDto);
-      if (result.affected < 0)throw new HttpException('Oops!! ocurrio un error actualizando', HttpStatus.INTERNAL_SERVER_ERROR); 
+      if (result.affected < 0)throw new HttpException('Ocurrió un error intenta más tarde', HttpStatus.INTERNAL_SERVER_ERROR); 
       return true;
     }
 

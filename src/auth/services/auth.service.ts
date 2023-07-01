@@ -25,9 +25,9 @@ export class AuthService {
 
     async login(email:string, password:string):Promise<string>{
         const user = await this.userService.findByEmail(email);
-        if( ! user)  throw new HttpException('Usuario o password invalido', HttpStatus.NOT_FOUND);
+        if( ! user)  throw new HttpException('Usuario o contraseña no válidos', HttpStatus.NOT_FOUND);
         const passwordMatch = await this.comparePassword(password,user.password)
-        if( ! passwordMatch ) throw new HttpException('Usuario o password invalido', HttpStatus.NOT_FOUND);
+        if( ! passwordMatch ) throw new HttpException('Usuario o contraseña no válidos', HttpStatus.NOT_FOUND);
         const empleado = await this.empleadosService.findByUserId(user.id);
         const token = await this.getToken({id:user.id, empleado: empleado.documento ,email: user.email,rol:user.rol});
         return token;
@@ -78,7 +78,7 @@ export class AuthService {
             console.log(err)
             if(err.status === HttpStatus.BAD_REQUEST){ throw err;
             }else
-                throw new HttpException('Oopss ocuarrio un error', HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new HttpException('Ocurrió un error intenta más tarde', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -87,7 +87,7 @@ export class AuthService {
     
         const user  = await this.userService.findByEmail(email);
         console.log({user})
-        if( ! user)  throw new HttpException('Usuario invalido', HttpStatus.NOT_FOUND);
+        if( ! user)  throw new HttpException('Usuario inválido', HttpStatus.NOT_FOUND);
         const token = await this.getToken({id:user.id, email: user.email,rol:user.rol},'1d');
         user.token  = token;
         await this.userService.update(user,{token:user.token});
@@ -101,7 +101,7 @@ export class AuthService {
           }
         const data = await this.emailService.sendResetPassword(mailTemplate);
         console.log({data})
-        const messagge = `te hemos enviado un correo a ${user.email} con los pasos para restablecer tú contraseña`;
+        const messagge = `Te hemos enviado un correo a  ${user.email} con los pasos para restablecer tu contraseña.`;
         return messagge;
     }
 
@@ -112,11 +112,11 @@ export class AuthService {
             if( ! user)  throw new HttpException('Usuario invalido', HttpStatus.NOT_FOUND);
             user.password = await this.encriptPassword(resetPassword.password);
             await this.userService.update(user,{password:user.password});
-            return 'cambio de password con exito';
+            return 'Cambio de contraseña con éxito.';
         } catch (error) {
             if(error.status === HttpStatus.NOT_FOUND){ throw error;
             }else
-                throw new UnauthorizedException({error: 'no autorizado'});
+                throw new UnauthorizedException({error: 'No autorizado'});
         }
     }
 

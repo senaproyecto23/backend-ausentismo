@@ -24,7 +24,7 @@ export class PdfService {
             .text('SOLICITUD DE PERMISO',200,300)
             .fontSize(10)
             .text(`funcionario(a) ${data.nombre} ${data.apellido}`,100,350)
-            .text(`Cedúla:  ${data.empleadoDocumento}`,100,380)
+            .text(`Cédula:  ${data.empleadoDocumento}`,100,380)
             .text(`Fecha diligenciamiento:  ${this.parseDate(data.fechaCreacion)}`,100,410)
             .text(`Solicito se me conceda`,100,440)
             .list([`${this.getDays(data.fechaInicio,data.fechaFin)} día(s) a partir del  ${this.parseDate(data.fechaInicio)}`,''],100,460)
@@ -45,7 +45,7 @@ export class PdfService {
             return doc;
         } catch (error) {
             console.log({error})
-            throw new HttpException('Oopss ocuarrio un error', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException('Ocurrió un error intenta más tarde', HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
