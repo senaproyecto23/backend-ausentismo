@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Header, HttpException, HttpStatus, Param, ParseFilePipe, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Header, HttpException, HttpStatus, Param, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AusentismoDto } from 'src/ausentismo/dto/ausentismo.dto';
 import { AuthGuard } from 'src/auth/guards/auth/auth.guard';
 import { AusentismoService } from '../../services/ausentismo/ausentismo.service';
@@ -7,16 +7,18 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RolesEnum } from 'src/auth/models/roles.enum';
 import { RoleGuard } from 'src/auth/guards/role/role.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import * as fs from 'fs-extra';
-import * as path from 'path';
-import { diskStorage } from 'multer'; 
+import { Response } from 'express';
+
 import { FileService } from 'src/utils/files/file/file.service';
+import * as ExcelJS from 'exceljs';
+
 
 @Controller('ausentismo')
 export class AusentismoController {
 
 
-    constructor(private ausentismoService:AusentismoService,private fileService:FileService){}
+    constructor(private ausentismoService:AusentismoService,
+        private fileService:FileService){}
 
 
  
@@ -98,6 +100,28 @@ export class AusentismoController {
         const result = await this.ausentismoService.update(data)
         if(result.affected <= 0) throw new HttpException('ocurrio un error actualizando el registro', HttpStatus.INTERNAL_SERVER_ERROR);
         return {result:'actualización exitosa'};
+    }
+
+
+    @UseGuards(AuthGuard)
+    @UseGuards(RoleGuard)
+    @Roles(RolesEnum.SUPERVISOR)
+    @Get('reporte')
+    async getExcel(@Res() res: Response) {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Sheet 1');
+      worksheet.addRow(['Nombre', 'Edad']);
+      worksheet.addRow(['John Doe', 30]);
+      worksheet.addRow(['Jane Smith', 25]);
+  
+      res.setHeader('Content-Disposition', 'attachment; filename=example.xlsx');
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      );
+  
+      await workbook.xlsx.write(res);
+  
     }
 }
  

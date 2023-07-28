@@ -3,8 +3,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AusentismoModule } from './ausentismo/ausentismo.module';
 import { AuthModule } from './auth/auth.module';
 import { EmpleadosModule } from './empleados/empleados.module';
+import { ListasModule } from './listas/listas.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UbicacionController } from './listas/controllers/ubicacion/ubicacion.controller';
 import { UsersModule } from './users/users.module';
 import { UtilsModule } from './utils/utils.module';
 
@@ -31,7 +33,8 @@ import { UtilsModule } from './utils/utils.module';
       inject: [ConfigService],
     }),
     UtilsModule,
-    AusentismoModule
+    AusentismoModule,
+    ListasModule
   ],
   controllers: [],
   providers: [],

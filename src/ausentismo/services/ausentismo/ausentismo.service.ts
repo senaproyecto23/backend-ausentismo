@@ -9,6 +9,7 @@ import { PdfService } from '../../../utils/pdf/pdf.service';
 import { UpdateAusentismoDTO } from 'src/ausentismo/dto/update-ausentismo-dto';
 import { FileService } from 'src/utils/files/file/file.service';
 import { AusentismoDocumentsEntity } from 'src/ausentismo/entities/ausentismo-documents.entity';
+import { ReportesService } from 'src/utils/reportes/reportes/reportes.service';
 
 
 
@@ -22,7 +23,8 @@ export class AusentismoService {
         private ausentismoDocRepository:Repository<AusentismoDocumentsEntity>,
         private empleadoService:EmpleadosService,
         private pdfService:PdfService,
-        private fileService:FileService){}
+        private fileService:FileService,
+        private reporteService:ReportesService){}
 
 
     async save(ausentismo:AusentismoDto,file: Express.Multer.File):Promise<AusentismoEntity>{

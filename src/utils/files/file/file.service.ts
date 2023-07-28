@@ -1,11 +1,7 @@
 import * as AWS from 'aws-sdk';
-import * as fs from 'fs-extra';
-import * as path from 'path';
 
 import { ConfigService } from '@nestjs/config';
-import { DiskStorageOptions } from 'multer';
 import { Injectable } from '@nestjs/common';
-import { extname } from 'path';
 
 @Injectable()
 export class FileService {
