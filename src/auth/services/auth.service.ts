@@ -56,7 +56,13 @@ export class AuthService {
                 genero:registerDto.genero,
                 fechaNacimiento:registerDto.fechaNacimiento,
                 telefono:registerDto.telefono,
-                lugarNacimiento:registerDto.lugarExpedicion,
+                tipoOcupacion:registerDto.tipoOcupacion,
+                codigoOcupacion:registerDto.codigoOcupacion,
+                eps:registerDto.eps,
+                codigoDepartamento:registerDto.codigoDepartamento,
+                codigoMunicipio:registerDto.codigoMunicipio,
+                codigoSede:registerDto.codigoSede,
+                factorPrestacional:registerDto.factorPrestacional,
                 usuarioId:user.id
             });
 

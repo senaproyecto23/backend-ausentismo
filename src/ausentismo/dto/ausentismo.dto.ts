@@ -3,7 +3,9 @@ export interface AusentismoDto{
     fechaFin:Date;
     horaInicio:Date;
     horaFin:Date;
-    motivo:string;
+    codigoContingencia:number;
+    codigoProceso:number;
+    codigoDiagostico?:string;
     documentoEmpleado:string;
     supervisorId:number;
 }

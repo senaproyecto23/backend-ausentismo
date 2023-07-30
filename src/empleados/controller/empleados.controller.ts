@@ -14,9 +14,9 @@ export class EmpleadosController {
 
     constructor(private empleadosService:EmpleadosService,private authService:AuthService){}
 
-    @UseGuards(AuthGuard)
-    @UseGuards(RoleGuard)
-    @Roles(RolesEnum.ADMIN)
+    //@UseGuards(AuthGuard)
+    //@UseGuards(RoleGuard)
+    //@Roles(RolesEnum.ADMIN)
     @Get()
     async getAll(){
        return this.empleadosService.findAll(); 

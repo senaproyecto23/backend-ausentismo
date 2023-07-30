@@ -7,7 +7,5 @@ export interface PdfData {
     horaIncio:Date;
     horaFin:Date;
     fechaFin:Date;
-    motivo:string;
-
-
+    contingencia:string;
 }

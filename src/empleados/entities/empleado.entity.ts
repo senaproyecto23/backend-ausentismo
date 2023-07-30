@@ -27,8 +27,26 @@ export class EmpleadoEntity{
     @Column()
     telefono:string;
 
-    @Column({name:'lugar_espedicion_documento'})
-    lugarNacimiento:string;
+    @Column({name:'tipo_ocupacion'})
+    tipoOcupacion:string;
+
+    @Column({name:'cod_ocupacion'})
+    codigoOcupacion:number;
+
+    @Column({name:'nombre_eps'})
+    eps:string;
+
+    @Column({name:'cod_departamento'})
+    codigoDepartamento:number;
+
+    @Column({name:'cod_municipio'})
+    codigoMunicipio:number;
+
+    @Column({name:'code_sede'})
+    codigoSede:number;
+
+    @Column({name:'factor_prestacional'})
+    factorPrestacional?:number;
 
     @Column({name:'usuario_id'})
     usuarioId:number;

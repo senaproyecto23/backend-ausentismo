@@ -32,7 +32,7 @@ export class PdfService {
             .fontSize(15)
             .text(`Motivo`,100,500)
             .fontSize(10)
-            .text(`${data.motivo}`,100,530)
+            .text(`${data.contingencia}`,100,530)
             .fontSize(10)
             .list(['Autorización: ______________________________________',],100,560)
             .list(['Observaciones:______________________________________'],100,600)  

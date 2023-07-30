@@ -10,6 +10,9 @@ import { UpdateAusentismoDTO } from 'src/ausentismo/dto/update-ausentismo-dto';
 import { FileService } from 'src/utils/files/file/file.service';
 import { AusentismoDocumentsEntity } from 'src/ausentismo/entities/ausentismo-documents.entity';
 import { ReportesService } from 'src/utils/reportes/reportes/reportes.service';
+import * as moment from 'moment';
+import { ReporteEntity } from 'src/ausentismo/entities/reporte.entity';
+import { DateArrayOptions } from 'aws-sdk/clients/cloudsearch';
 
 
 
@@ -21,6 +24,8 @@ export class AusentismoService {
         private ausentismoRepository:Repository<AusentismoEntity>,
         @InjectRepository(AusentismoDocumentsEntity)
         private ausentismoDocRepository:Repository<AusentismoDocumentsEntity>,
+        @InjectRepository(ReporteEntity)
+        private reporteRepository:Repository<ReporteEntity>,
         private empleadoService:EmpleadosService,
         private pdfService:PdfService,
         private fileService:FileService,
@@ -36,17 +41,19 @@ export class AusentismoService {
         ausentismoDB = await this.ausentismoRepository.findOne({where:{empleadoDocumento:ausentismo.documentoEmpleado,fechaInicio:ausentismo.fechaInicio, activo:true}});
  
         if( ausentismoDB ) throw new HttpException('Ya existe un certificado para esa fecha', HttpStatus.BAD_REQUEST);
- 
+      
         const ausentismoEntity:AusentismoEntity = {
             fechaInicio: ausentismo.fechaInicio,
             fechaFin:ausentismo.fechaFin,
             horaInicio:ausentismo.horaInicio,
             horaFin:ausentismo.horaFin,
-            motivo: ausentismo.motivo,
             empleadoDocumento: ausentismo.documentoEmpleado,
             estado: Estados.PENDIENTE,
             activo: true,
             fechaCreacion: new Date(),
+            codigoContingencia:ausentismo.codigoContingencia,
+            codigoProceso:ausentismo.codigoProceso,
+            codigoDiagostico:ausentismo.codigoDiagostico,
             supervisorId:ausentismo.supervisorId
         }
 
@@ -96,7 +103,7 @@ export class AusentismoService {
                                                     fechaFin: ausentismo.fechaFin,
                                                     horaIncio: ausentismo.horaInicio,
                                                     horaFin: ausentismo.horaFin,
-                                                    motivo: ausentismo.motivo,
+                                                    contingencia: '',//TODO agregar contingencia
                                                 });
 
         return pdf;
@@ -107,5 +114,14 @@ export class AusentismoService {
         const ausentismo = await this.findById(update.id);
         if( ! ausentismo ) throw new HttpException('Certificado no encontrado', HttpStatus.NOT_FOUND);
         return this.ausentismoRepository.update(ausentismo.id,{estado:update.estado,observacion:update.observacion,activo:false});;
+    }
+
+    findByDate(fecha:Date):Promise<AusentismoEntity[]>{
+        return this.ausentismoRepository.find({where:{fechaCreacion:fecha}});
+    }
+
+    async reporte(fecha:Date,estado:string){
+        const data = await this.reporteRepository.find({where:{fechaCreacion:fecha,estado:estado}});
+        return this.reporteService.getExcel(data);
     }
 }

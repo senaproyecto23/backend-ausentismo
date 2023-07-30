@@ -11,6 +11,7 @@ import { Response } from 'express';
 
 import { FileService } from 'src/utils/files/file/file.service';
 import * as ExcelJS from 'exceljs';
+import { Reporte } from 'src/ausentismo/dto/reporte.dto';
 
 
 @Controller('ausentismo')
@@ -23,7 +24,7 @@ export class AusentismoController {
 
  
 
-    @UseGuards(AuthGuard)
+    //@UseGuards(AuthGuard)
     @Post('crear')
     @UseInterceptors(FileInterceptor('file'))
     async create( @Req() request: any,@UploadedFile() file: Express.Multer.File) {
@@ -75,7 +76,7 @@ export class AusentismoController {
     }
 
 
-    @UseGuards(AuthGuard)
+   // @UseGuards(AuthGuard)
     @Get('historial/:document')
     async historial(@Param() params: any){
         const result = await this.ausentismoService.findAll(params.document);
@@ -103,26 +104,19 @@ export class AusentismoController {
     }
 
 
-    @UseGuards(AuthGuard)
-    @UseGuards(RoleGuard)
-    @Roles(RolesEnum.SUPERVISOR)
-    @Get('reporte')
-    async getExcel(@Res() res: Response) {
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Sheet 1');
-      worksheet.addRow(['Nombre', 'Edad']);
-      worksheet.addRow(['John Doe', 30]);
-      worksheet.addRow(['Jane Smith', 25]);
-  
-      res.setHeader('Content-Disposition', 'attachment; filename=example.xlsx');
-      res.setHeader(
-        'Content-Type',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      );
+   // @UseGuards(AuthGuard)
+   // @UseGuards(RoleGuard)
+   // @Roles(RolesEnum.SUPERVISOR)
+   @Post('reporte')
+    async getExcel(@Body() reporte: Reporte,@Res() res: Response) {
+     
+      const workbook = await this.ausentismoService.reporte(reporte.fecha,reporte.estado);
+      res.setHeader('Content-Disposition', 'attachment; filename=reporte.xlsx');
+      res.setHeader('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   
       await workbook.xlsx.write(res);
-  
     }
+
 }
  
 

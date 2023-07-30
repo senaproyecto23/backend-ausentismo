@@ -18,9 +18,6 @@ export class AusentismoEntity{
     @Column('time',{name:'hora_fin'})
     horaFin?:Date;
 
-    @Column({name:'motivo'})
-    motivo:string;
-
     @Column({name:'empleado_documento'})
     empleadoDocumento:string;
 
@@ -35,6 +32,15 @@ export class AusentismoEntity{
 
     @Column({name:'fecha_creacion'})
     fechaCreacion?:Date;
+
+    @Column({name:'cod_contingencia'})
+    codigoContingencia:number;
+
+    @Column({name:'cod_proceso'})
+    codigoProceso:number;
+
+    @Column({name:'cod_diagnostico'})
+    codigoDiagostico?:string;
 
     @Column({name:'supervisor_id'})
     supervisorId:number;

@@ -6,8 +6,14 @@ export interface RegisterDto{
     apellido:string;
     tipoDocumento:number;
     documento:string;
-    lugarExpedicion:string;
     genero:number;
     fechaNacimiento:Date;
     telefono:string;
+    tipoOcupacion:string;
+    codigoOcupacion:number;
+    eps:string;
+    codigoDepartamento:number;
+    codigoMunicipio:number;
+    codigoSede:number;
+    factorPrestacional?:number;
 }

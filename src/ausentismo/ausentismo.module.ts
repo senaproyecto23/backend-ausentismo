@@ -6,6 +6,7 @@ import { AusentismoEntity } from './entities/ausentismo.entity';
 import { AusentismoService } from './services/ausentismo/ausentismo.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { EmpleadosModule } from 'src/empleados/empleados.module';
+import { ReporteEntity } from './entities/reporte.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UtilsModule } from 'src/utils/utils.module';
 
@@ -13,7 +14,7 @@ import { UtilsModule } from 'src/utils/utils.module';
   imports:[forwardRef(()=>AuthModule) ,
     forwardRef(()=>UtilsModule),
     forwardRef(()=>EmpleadosModule),
-    TypeOrmModule.forFeature([AusentismoEntity,AusentismoDocumentsEntity])
+    TypeOrmModule.forFeature([AusentismoEntity,AusentismoDocumentsEntity,ReporteEntity])
   ],
   controllers: [AusentismoController],
   providers: [AusentismoService],
