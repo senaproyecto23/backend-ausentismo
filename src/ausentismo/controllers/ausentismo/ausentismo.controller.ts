@@ -10,7 +10,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 
 import { FileService } from 'src/utils/files/file/file.service';
-import * as ExcelJS from 'exceljs';
 import { Reporte } from 'src/ausentismo/dto/reporte.dto';
 
 

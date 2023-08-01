@@ -12,7 +12,7 @@ export class ReportesService {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Sheet 1');
         this.createExcelHeader(worksheet);
-       // this.addContenido(worksheet,data)
+        this.addContenido(worksheet,data)
         return workbook;
     }
 
@@ -24,7 +24,7 @@ export class ReportesService {
                         'Num_Documento','Nombre_Trabajador','Edad','Sexo','Cod_Ocupación',
                         'Nombre_EPS','Tipo_Ocupación','I.B.C.','Cod_Contingencia','Cod_Proceso',
                         'Fecha_Inicio','Fecha_Fin','Cod_Diagnostico','Factor_Prestacional','Observacion'
-                    ]);
+                    ]).font = { bold: true };
     }
 
     private addContenido(pagina:Worksheet,data:ReporteEntity[]){
@@ -34,7 +34,7 @@ export class ReportesService {
             const edad = actualAnio - anioNacimiento;
             pagina.addRow([
                 '','','preguntar a quien pertence','nit de quien??',item.codDepartamento,item.codMunicipio,
-                item.sede,item.tipoDocumento,item.documento,item.nombre,item.apellido,edad,item.genero,
+                item.sede,item.tipoDocumento,item.documento,item.nombre+ ' ' + item.apellido,edad,item.genero,
                 item.codOcupacion,item.eps,item.tipoOcupacion,'preguntar que es?',item.codigoContingencia,
                 item.codigoProceso,item.fechaInicio,item.fechaFin,(item.codigoDiagnostico)?item.codigoDiagnostico:'',
                 (item.factorPrestacional)?item.factorPrestacional:'',(item.observacion)?item.observacion:''
