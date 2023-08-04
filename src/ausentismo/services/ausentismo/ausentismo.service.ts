@@ -121,7 +121,10 @@ export class AusentismoService {
     }
 
     async reporte(fecha:Date,estado:string){
+        console.log(fecha)
         const data = await this.reporteRepository.find({where:{fechaCreacion:fecha,estado:estado}});
+        //console.log(data)
+        if (data.length == 0)throw new HttpException('No hay datos para la fecha ingresada', HttpStatus.NOT_FOUND);
         return this.reporteService.getExcel(data);
     }
 }

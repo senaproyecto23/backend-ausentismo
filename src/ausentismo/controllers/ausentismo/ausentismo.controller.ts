@@ -23,7 +23,7 @@ export class AusentismoController {
 
  
 
-    //@UseGuards(AuthGuard)
+    @UseGuards(AuthGuard)
     @Post('crear')
     @UseInterceptors(FileInterceptor('file'))
     async create( @Req() request: any,@UploadedFile() file: Express.Multer.File) {
@@ -75,7 +75,7 @@ export class AusentismoController {
     }
 
 
-   // @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard)
     @Get('historial/:document')
     async historial(@Param() params: any){
         const result = await this.ausentismoService.findAll(params.document);
@@ -108,7 +108,6 @@ export class AusentismoController {
    // @Roles(RolesEnum.SUPERVISOR)
    @Post('reporte')
     async getExcel(@Body() reporte: Reporte,@Res() res: Response) {
-     
       const workbook = await this.ausentismoService.reporte(reporte.fecha,reporte.estado);
       res.setHeader('Content-Disposition', 'attachment; filename=reporte.xlsx');
       res.setHeader('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
