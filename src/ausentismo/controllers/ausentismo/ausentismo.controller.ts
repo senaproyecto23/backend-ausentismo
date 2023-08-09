@@ -82,7 +82,7 @@ export class AusentismoController {
         return result
     }
 
-    //@UseGuards(AuthGuard)
+    @UseGuards(AuthGuard)
     @Get('pdf/:id')
     @Header('Content-Type','application/pdf')
     @Header('Content-Disposition','attachment; filename="ausentismo.pdf"')
