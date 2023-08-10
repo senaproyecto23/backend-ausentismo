@@ -12,10 +12,10 @@ export class PdfService {
     async generate(data:PdfData):Promise<any>{
 
         try {
-            const doc =  new PDFDocument({size:'LEGAL'});
+            const doc =  new PDFDocument({size:'TABLOID'});
             this.createTabla(doc);
             doc.fontSize(20)
-            .text('SOLICITUD DE PERMISO',200,140)
+            .text('SOLICITUD DE PERMISO',300,140)
             this.createTableBody(doc)
     /*
             const imagePath = path.join(path.resolve('src'),'assets/logo.png') 
@@ -55,32 +55,13 @@ export class PdfService {
     }
 
     createTabla(doc){
-        // Datos para la tabla
-        const tableData = [
-                        ['Nombre', 'Edad', 'Ciudad'],
-                        ['Juan', '25', 'Madrid'],
-                        ['María', '30', 'Barcelona'],
-                        ['Carlos', '22', 'Valencia']
-                    ];
-
         // Dibujar la tabla en el documento
-        this.drawTable(doc,tableData, 50, 20);            
+        this.drawTable(doc);            
     }
 
     // Función para dibujar la tabla
-    drawTable(doc,data, startX, startY) {
-
-        // Configurar las propiedades de la tabla
-        const tableWidth = 500;
-        const tableHeight =  90;
-        //doc.rect(startX, startY, tableWidth, tableHeight).stroke();
+    drawTable(doc) {
         this.createHeader(doc)
-       /* for (const row of data) {
-            this.drawCell(doc,row[0], startX, y, tableWidth / columnas, cellHeight);
-            this.drawCell(doc,row[1], startX + tableWidth / columnas, y, tableWidth / columnas, cellHeight);
-            //this.drawCell(doc,row[2], startX + (tableWidth / 3) * 2, y, tableWidth / 3, cellHeight);
-            y += cellHeight;
-        }*/
     }
 
     drawCell(doc,text, x, y, width, height) {
@@ -105,55 +86,96 @@ export class PdfService {
     createHeader(doc){
         const width =100;
         const height = 90;
-        this.drawCellWithImage(doc, 50, 20, width, height);
-        this.drawCell(doc, 'encabezado', 150, 20, 400, 40);
-        this.drawCell(doc, 'proceso', 150, 60, 180, 50);
-        this.drawCell(doc, 'codigo', 330, 60, 120, 50);
-        this.drawCell(doc, 'version', 450, 60, 100, 50);
+        this.drawCellWithImage(doc, 150, 20, width, height);
+        this.drawCell(doc, 'encabezado', 250, 20, 400, 40);
+        this.drawCell(doc, 'proceso', 250, 60, 180, 50);
+        this.drawCell(doc, 'codigo', 430, 60, 120, 50);
+        this.drawCell(doc, 'version', 550, 60, 100, 50);
 
     }
 
     createTableBody(doc){
           // Configurar las propiedades de la tabla
-        const tableWidth = 500;
-        const tableHeight =  650;
-        doc.rect(50, 170, tableWidth, tableHeight).stroke();
-        this.drawCell(doc, 'fecha solicitud', 50, 170, 500, 30);
-        this.drawCell(doc, 'funcionario', 50, 200, 500, 30);
-        this.drawCell(doc, 'cedula', 50, 230, 500, 30);
-        this.drawCell(doc, 'cargo', 50, 260, 500, 30);
-        this.drawCell(doc, 'dependecia', 50, 290, 500, 30);
-        this.drawCell(doc, 'causal de solicitud', 50, 320, 500, 600);
+        const width_c1 = 500;
+        const height_c1 =  30;
+        const posX_c1 = 150;
+        const posY_c1 = 170
+        this.drawCell(doc, 'fecha solicitud', posX_c1, posY_c1, width_c1, height_c1);
+        this.drawCell(doc, 'funcionario', posX_c1, 200, width_c1, height_c1);
+        this.drawCell(doc, 'cedula', posX_c1, 230, width_c1, height_c1);
+        this.drawCell(doc, 'cargo', posX_c1, 260, width_c1, height_c1);
+        this.drawCell(doc, 'dependecia', posX_c1, 290, width_c1, height_c1);
+        this.drawCell(doc, 'causal de solicitud', posX_c1, 320, width_c1, 485);
         this.createCausalTable(doc)
+        this.drawCell(doc, 'Fecha del permiso, estímulo o compensatorio:', posX_c1, 805, width_c1, 110);
+        this.createFechaAusentismo(doc)
+        this.drawCell(doc, 'Observaciones:', posX_c1, 915, width_c1, 70);
+        this.createFirmas(doc)
+    }
+
+    createFirmas(doc){
+        const posX_c1 = 150;
+        const posY_c1 = 170
+        doc.text('____________________________',posX_c1,1050)
+        doc.text('Funcionario',posX_c1,1065)
+        doc.text('____________________________',posX_c1+300,1050)
+        doc.text('Superior Inmediato',posX_c1+300,1065)
+        doc.text('______________________________',posX_c1,1120)
+        doc.text('Secretaria Administrativa y Financiera',posX_c1,1135)
+        doc.text('______________________________',posX_c1+300,1120)
+        doc.text('Contralor Departamental',posX_c1+300,1135)
+        //doc.text('fecha',posX_c1,1140)
+       
+    }
+
+    createFechaAusentismo(doc){
+        const width_c1 = 240;
+        const height_c1 =  25;
+        const posX_c1 = 159;
+        const posY_c1 = 830
+        ///////////////////////
+        const posX_c2 = 400;
+        const posY_c2 = 830;
+        const width_c2 = 240;
+        const height_c2 =  25;
+        let currentPosY = (posY_c1 + height_c1);
+
+        for (let index = 1; index <=3; index++) {
+            if(index == 1){
+                this.drawCell(doc, '--'+index, posX_c1, posY_c1, width_c1, height_c1);
+                this.drawCell(doc, 'contenido', posX_c2, posY_c2, width_c2, height_c2);
+            }else{
+                this.drawCell(doc, '--'+index, posX_c1, currentPosY, width_c1, height_c1);
+                this.drawCell(doc, 'contenido', posX_c2, currentPosY, width_c2, height_c2);
+                currentPosY += height_c1
+            }
+        }
+      
     }
 
     createCausalTable(doc){
-        const tableWidth = 480;
-        const tableHeight =  600;
-        doc.rect(59, 350, tableWidth, tableHeight).stroke();
-        this.drawCell(doc, '--1', 59, 350, 250, 40);
-        this.drawCell(doc, 'contenido', 309, 350, 230, 40);
-        this.drawCell(doc, '--2', 59, 390, 250, 40);
-        this.drawCell(doc, 'contenido', 309, 390, 230, 40);
-        this.drawCell(doc, '--3', 59, 430, 250, 40);
-        this.drawCell(doc, 'contenido', 309, 430, 230, 40);
-        this.drawCell(doc, '--4', 59, 470, 250, 40);
-        this.drawCell(doc, 'contenido', 309, 470, 230, 40);
-        this.drawCell(doc, '--5', 59, 510, 250, 40);
-        this.drawCell(doc, 'contenido', 309, 510, 230, 40);
-        this.drawCell(doc, '--6', 59, 550, 250, 40);
-        this.drawCell(doc, 'contenido', 309, 550, 230, 40); 
-        this.drawCell(doc, '--7', 59, 590, 250, 40);
-        this.drawCell(doc, 'contenido', 309, 590, 230, 40);
-        this.drawCell(doc, '--8', 59, 630, 250, 40);
-        this.drawCell(doc, 'contenido', 309, 630, 230, 40);
-        this.drawCell(doc, '--9 compensatorio', 59, 670, 480, 120);
-        this.drawCell(doc, '--9.1', 70, 700, 230, 40);
-        this.drawCell(doc, '--9.2', 300, 700, 230, 40);
-        this.drawCell(doc, '--9.3', 70, 740, 230, 40);
-        this.drawCell(doc, '--9.4', 300, 740, 230, 40);
-        this.drawCell(doc, 'Otro', 59, 780, 250, 20);
-        this.drawCell(doc, 'cual?', 309, 780, 230, 20);
+        const width_c1 = 400;
+        const height_c1 =  30;
+        const posX_c1 = 159;
+        const posY_c1 = 350
+        ///////////////////////
+        const posX_c2 = 560;
+        const posY_c2 = 350;
+        const width_c2 = 79;
+        const height_c2 =  30;
+        let currentPosY = (posY_c1 + height_c1);
+
+        for (let index = 1; index <=  15; index++) {
+            if(index == 1){
+                this.drawCell(doc, '--'+index, posX_c1, posY_c1, width_c1, height_c1);
+                this.drawCell(doc, 'contenido', posX_c2, posY_c2, width_c2, height_c2);
+            }else{
+                this.drawCell(doc, '--'+index, posX_c1, currentPosY, width_c1, height_c1);
+                this.drawCell(doc, 'contenido', posX_c2, currentPosY, width_c2, height_c2);
+                currentPosY += height_c1
+            }
+        }
+      
     }
 
     getDays(fecha1:Date,fecha2:Date): number{

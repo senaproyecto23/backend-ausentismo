@@ -113,7 +113,7 @@ export class AusentismoService {
     async update(update: UpdateAusentismoDTO):Promise<UpdateResult>{
         const ausentismo = await this.findById(update.id);
         if( ! ausentismo ) throw new HttpException('Certificado no encontrado', HttpStatus.NOT_FOUND);
-        return this.ausentismoRepository.update(ausentismo.id,{estado:update.estado,observacion:update.observacion,activo:false});;
+        return this.ausentismoRepository.update(ausentismo.id,{estado:update.estado,observacion:update.observacion,fechaAprobacion:new Date(),activo:false});;
     }
 
     findByDate(fecha:Date):Promise<AusentismoEntity[]>{

@@ -33,6 +33,9 @@ export class AusentismoEntity{
     @Column({name:'fecha_creacion'})
     fechaCreacion?:Date;
 
+    @Column({name:'fecha_aprobacion'})
+    fechaAprobacion?:Date;
+
     @Column({name:'cod_contingencia'})
     codigoContingencia:number;
 
