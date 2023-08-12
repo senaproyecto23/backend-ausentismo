@@ -96,14 +96,16 @@ export class AusentismoService {
 
         const pdf = await this.pdfService.generate({
                                                     nombre: empleado.nombre,
-                                                    empleadoDocumento:empleado.documento,
                                                     apellido: empleado.apellido,
+                                                    empleadoDocumento:empleado.documento,
+                                                    empleadoCargo: empleado.codigoOcupacion,
                                                     fechaCreacion: ausentismo.fechaCreacion,
                                                     fechaInicio: ausentismo.fechaInicio,
                                                     fechaFin: ausentismo.fechaFin,
                                                     horaIncio: ausentismo.horaInicio,
                                                     horaFin: ausentismo.horaFin,
-                                                    contingencia: '',//TODO agregar contingencia
+                                                    contingencia: ausentismo.codigoContingencia,
+                                                    diagnostico:ausentismo?.codigoDiagostico
                                                 });
 
         return pdf;

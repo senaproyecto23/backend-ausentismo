@@ -15,15 +15,15 @@ import { EpsService } from './services/eps/eps.service';
 import { OcupacionController } from './controllers/ocupacion/ocupacion.controller';
 import { OcupacionEntity } from './entities/ocupacion.entity';
 import { OcupacionService } from './services/ocupacion/ocupacion.service';
+import { ProcesosController } from './controllers/procesos/procesos.controller';
 import { ProcesosEntity } from './entities/procesos.entity';
+import { ProcesosService } from './services/procesos/procesos.service';
+import { SedesController } from './controllers/sedes/sedes.controller';
 import { SedesEntity } from './entities/sedes.entity';
+import { SedesService } from './services/sedes/sedes.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UbicacionController } from './controllers/ubicacion/ubicacion.controller';
 import { UbicacionService } from './services/ubicacion/ubicacion.service';
-import { ProcesosService } from './services/procesos/procesos.service';
-import { SedesService } from './services/sedes/sedes.service';
-import { SedesController } from './controllers/sedes/sedes.controller';
-import { ProcesosController } from './controllers/procesos/procesos.controller';
 
 @Module({
   controllers: [EpsController,UbicacionController, 
@@ -35,6 +35,9 @@ import { ProcesosController } from './controllers/procesos/procesos.controller';
                               DiagnosticoEntity,OcupacionEntity,
                               ProcesosEntity,SedesEntity])
   ],
-  providers: [UbicacionService, EpsService, ContingenciaService, OcupacionService, DiagnosticoService, ProcesosService, SedesService]
+  providers: [UbicacionService, EpsService, ContingenciaService, 
+            OcupacionService, DiagnosticoService, ProcesosService, SedesService],
+  exports:[OcupacionService,ContingenciaService,DiagnosticoService]
+  
 })
 export class ListasModule {}

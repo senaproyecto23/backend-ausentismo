@@ -14,4 +14,8 @@ export class OcupacionService {
     getAll():Promise<OcupacionEntity[]>{
         return this.respository.find();
     }
+
+    getByCode(codigo:number):Promise<OcupacionEntity>{
+        return this.respository.findOne({where:{codigo}});
+    }
 }

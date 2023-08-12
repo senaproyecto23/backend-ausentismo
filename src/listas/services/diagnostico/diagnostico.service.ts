@@ -15,4 +15,8 @@ export class DiagnosticoService {
     getAll():Promise<DiagnosticoEntity[]>{
         return this.repository.find();
     }
+
+    getByCode(codigo:string):Promise<DiagnosticoEntity>{
+        return this.repository.findOne({where:{codigo}});
+    }
 }
