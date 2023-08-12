@@ -15,4 +15,8 @@ export class ProcesosService {
     getAll():Promise<ProcesosEntity[]>{
         return this.repository.find();
     }
+
+    getByCode(codigo:number):Promise<ProcesosEntity>{
+        return this.repository.findOne({where:{codigo}});
+    }
 }

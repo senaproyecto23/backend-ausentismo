@@ -10,4 +10,6 @@ export interface PdfData {
     fechaFin:Date;
     contingencia:number;
     diagnostico?:string;
+    fechaAprobacion?;
+    codigoProceso?;
 }

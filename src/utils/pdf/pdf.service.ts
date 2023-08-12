@@ -9,6 +9,7 @@ import { ContingenciaService } from 'src/listas/services/contingencia/contingenc
 import { DiagnosticoService } from 'src/listas/services/diagnostico/diagnostico.service';
 import { OcupacionService } from 'src/listas/services/ocupacion/ocupacion.service';
 import { PdfData } from './models/pdf-data';
+import { ProcesosService } from 'src/listas/services/procesos/procesos.service';
 
 interface CeldaConfig{
     doc:any;
@@ -31,13 +32,14 @@ export class PdfService {
 
     constructor(private ocupacionService:OcupacionService,
         private contingenciaService:ContingenciaService,
-        private diagnosticoService:DiagnosticoService){}
+        private diagnosticoService:DiagnosticoService,
+        private procesoService:ProcesosService){}
 
     async generate(data:PdfData):Promise<any>{
 
         try {
             const doc =  new PDFDocument({size:'TABLOID'});
-            this.createHeader(doc,data);
+            await this.createHeader(doc,data);
             doc.fontSize(20)
             .text('SOLICITUD DE PERMISO',300,140)
             await this.createTableInfoBasica(doc,data);
@@ -53,7 +55,7 @@ export class PdfService {
 
     }
  
-    createHeader(doc,data:PdfData){
+    async createHeader(doc,data:PdfData){
         const width =100;
         const height = 90;
         const cellPadding = 10;
@@ -68,13 +70,14 @@ export class PdfService {
             height:40,
             fontSize:fontSize,
             cellPadding:cellPadding,
-            font:'',
+            font:'Helvetica-Bold',
             align:'center'
         }
 
         this.drawCellWithImage(doc, 150, 20, width, height);
+
         this.drawCell( celdaConfig);
-        celdaConfig.text = 'Proceso:';
+        celdaConfig.text = `Proceso:\n ${await this.getNombreProceso(data.codigoProceso)}`;
         celdaConfig.posX = 250;
         celdaConfig.posY = 60;
         celdaConfig.width = 180;
@@ -140,7 +143,7 @@ export class PdfService {
             align:'left'
         }
         this.drawCell(celdaConfig);
-        celdaConfig.text = `Funcionario:${data.nombre} ${data.apellido}`;
+        celdaConfig.text = `Funcionario: ${data.nombre} ${data.apellido}`;
         celdaConfig.posY =200;
         this.drawCell(celdaConfig);
         celdaConfig.text = `cedula: ${data.empleadoDocumento}`
@@ -172,19 +175,18 @@ export class PdfService {
         //////////////////////
         const cellPadding = 10;
         const fontSize = 12;
-        const align = 'center'
         let currentPosY = (posY_c1 + height_c1);
 
         let celdaConfig:CeldaConfig = {
             doc:doc,
-            text: 'causal de solicitud',
+            text: 'Causal de solicitud',
             posX:posX_c1_titulo,
             posY:320,
             width:width_c1_titulo,
             height:485,
             fontSize:fontSize,
             cellPadding:cellPadding,
-            font:'',
+            font:'Helvetica-Bold',
             align:'left'
         }
 
@@ -199,6 +201,8 @@ export class PdfService {
                 celdaConfig.posY = posY_c1;
                 celdaConfig.width=width_c1;
                 celdaConfig.height = height_c1;
+                celdaConfig.font = 'Helvetica';
+                celdaConfig.align = `${(item.codigo === data.contingencia)?'center':'left'}`
                 this.drawCell(celdaConfig);
 
                 celdaConfig.text =  `${(item.codigo === data.contingencia)?'X':''}`;
@@ -206,7 +210,8 @@ export class PdfService {
                 celdaConfig.posY = posY_c2;
                 celdaConfig.width=width_c2;
                 celdaConfig.height = height_c2;
-                celdaConfig.align = align
+                celdaConfig.font = 'Helvetica';
+                celdaConfig.align = `${(item.codigo === data.contingencia)?'center':'left'}`
                 this.drawCell( celdaConfig);
             }else{
                 celdaConfig.text =   `${item.descripcion}`;
@@ -222,7 +227,8 @@ export class PdfService {
                 celdaConfig.posY = currentPosY;
                 celdaConfig.width=width_c2;
                 celdaConfig.height = height_c2;
-                celdaConfig.align = align
+                celdaConfig.font = 'Helvetica';
+                celdaConfig.align = `${(item.codigo === data.contingencia)?'center':'left'}`
                 this.drawCell( celdaConfig);
                 currentPosY += height_c1
             }
@@ -237,7 +243,6 @@ export class PdfService {
         const posY_c1 = 830
         ///////////////////////
         const posX_c2 = 400;
-        const posY_c2 = 830;
         const width_c2 = 240;
         const height_c2 =  25;
          // Configurar las propiedades de la tabla
@@ -256,28 +261,25 @@ export class PdfService {
             height:110,
             fontSize:fontSize,
             cellPadding:cellPadding,
-            font:'',
+            font:'Helvetica',
             align:'left'
         }
 
         this.drawCell( celdaConfig);
         let currentPosY = (posY_c1 + height_c1);
-
-        
-        
-                
+    
         for (let index = 1; index <=3; index++) {
             if(index == 1){
                 celdaConfig.text = `Número de días (${this.isDays(data)})`;
                 celdaConfig.posX = posX_c1;
-                celdaConfig.posY = currentPosY;
+                celdaConfig.posY = posY_c1;
                 celdaConfig.width=width_c1;
                 celdaConfig.height = height_c1;
                 this.drawCell( celdaConfig);
                 
                 celdaConfig.text = `Permiso de horas (${this.isHours(data)})`;
                 celdaConfig.posX = posX_c2;
-                celdaConfig.posY = currentPosY;
+                celdaConfig.posY = posY_c1;
                 celdaConfig.width=width_c2;
                 celdaConfig.height = height_c2;
                 this.drawCell(celdaConfig );
@@ -336,7 +338,7 @@ export class PdfService {
             height:70,
             fontSize:fontSize,
             cellPadding:cellPadding,
-            font:'',
+            font:'Helvetica',
             align:'left'
         }
 
@@ -366,8 +368,8 @@ export class PdfService {
         doc.text('Funcionario',posX_c1,1065)
         doc.text('____________________________',posX_c1+300,1050)
         doc.text('Superior Inmediato',posX_c1+300,1065);
-
-        if(cantidadDias > 1 && cantidadDias < 3){
+        console.log(cantidadDias)
+        if(cantidadDias > 1 && cantidadDias <= 3){
             doc.text('______________________________',posX_c1,1120)
             doc.text('Secretaria Administrativa y Financiera',posX_c1,1135)
         }
@@ -408,5 +410,10 @@ export class PdfService {
     async getNombreDiagnostico(codigo:string){
         const diagnostico = await this.diagnosticoService.getByCode(codigo);
         return diagnostico.descripcion;
+    }
+
+    async getNombreProceso(codigo:number){
+        const proceso = await this.procesoService.getByCode(codigo);
+        return proceso.descripcion;
     }
 }

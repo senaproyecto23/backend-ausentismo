@@ -37,7 +37,7 @@ import { UbicacionService } from './services/ubicacion/ubicacion.service';
   ],
   providers: [UbicacionService, EpsService, ContingenciaService, 
             OcupacionService, DiagnosticoService, ProcesosService, SedesService],
-  exports:[OcupacionService,ContingenciaService,DiagnosticoService]
+  exports:[OcupacionService,ContingenciaService,DiagnosticoService,ProcesosService]
   
 })
 export class ListasModule {}

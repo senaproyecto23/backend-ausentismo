@@ -105,7 +105,9 @@ export class AusentismoService {
                                                     horaIncio: ausentismo.horaInicio,
                                                     horaFin: ausentismo.horaFin,
                                                     contingencia: ausentismo.codigoContingencia,
-                                                    diagnostico:ausentismo?.codigoDiagostico
+                                                    diagnostico:ausentismo?.codigoDiagostico,
+                                                    fechaAprobacion:ausentismo?.fechaAprobacion,
+                                                    codigoProceso: ausentismo.codigoProceso
                                                 });
 
         return pdf;
