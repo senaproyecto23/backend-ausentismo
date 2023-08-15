@@ -21,4 +21,8 @@ export class UbicacionService {
     getCiudades():Promise<CiudadEntity[]>{
         return this.ciudadRepository.find();
     }
+
+    getCiudadByCodigo(codigo:number):Promise<CiudadEntity>{
+        return this.ciudadRepository.findOne({where:{codigo}})
+    }
 }
