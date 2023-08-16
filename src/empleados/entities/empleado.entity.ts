@@ -51,5 +51,16 @@ export class EmpleadoEntity{
     @Column({name:'usuario_id'})
     usuarioId:number;
 
+    @Column({name:'tipo_documento_empresa'})
+    tipoDocumentoEmpresa?:number;
 
+
+    @Column({name:'nit_empresa'})
+    nitEmpresa?:string;
+
+    @Column({name:'nombre_empresa'})
+    nombreEmpresa?:string;
+
+    @Column({name:'IBC'})
+    ibc?:number;
 }

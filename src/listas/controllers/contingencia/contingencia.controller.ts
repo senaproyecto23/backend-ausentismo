@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { ContingenciaService } from '../../services/contingencia/contingencia.service';
 
@@ -11,5 +11,10 @@ export class ContingenciaController {
     @Get()
     async getAll(){
         return await this.contingenciaService.getAll();
+    }
+
+    @Get('/:codigo')
+    async getByCode(@Param() params: any){
+        return await this.contingenciaService.getByCode(params.codigo);
     }
 }

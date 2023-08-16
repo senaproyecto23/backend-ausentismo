@@ -14,4 +14,8 @@ export class ContingenciaService {
     getAll():Promise<ContingenciaEntity[]>{
         return this.repository.find();
     }
+
+    getByCode(codigo:number):Promise<ContingenciaEntity>{
+        return this.repository.findOne({where:{codigo}})
+    }
 }

@@ -33,9 +33,9 @@ export class ReportesService {
             const anioNacimiento = moment(item.fechaNacimiento).year()
             const edad = actualAnio - anioNacimiento;
             pagina.addRow([
-                '','','preguntar a quien pertence','nit de quien??',item.codDepartamento,item.codMunicipio,
+                '','', item.tipoDocumentoEmpresa,item.nitEmpresa,item.codDepartamento,item.codMunicipio,
                 item.sede,item.tipoDocumento,item.documento,item.nombre+ ' ' + item.apellido,edad,item.genero,
-                item.codOcupacion,item.eps,item.tipoOcupacion,'preguntar que es?',item.codigoContingencia,
+                item.codOcupacion,item.eps,item.tipoOcupacion,item.IBC,item.codigoContingencia,
                 item.codigoProceso,item.fechaInicio,item.fechaFin,(item.codigoDiagnostico)?item.codigoDiagnostico:'',
                 (item.factorPrestacional)?item.factorPrestacional:'',(item.observacion)?item.observacion:''
             ]);

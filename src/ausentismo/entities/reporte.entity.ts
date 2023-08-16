@@ -94,4 +94,14 @@ export class ReporteEntity{
 
     @ViewColumn({name:'factor_prestacional'})
     factorPrestacional?:number;
+
+
+    @ViewColumn({name:'tipo_documento_empresa'})
+    tipoDocumentoEmpresa:number;
+
+    @ViewColumn({name:'nit_empresa'})
+    nitEmpresa:string;
+
+    @ViewColumn({name:'IBC'})
+    IBC?:number;
 }

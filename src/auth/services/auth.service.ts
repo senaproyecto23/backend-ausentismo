@@ -63,7 +63,11 @@ export class AuthService {
                 codigoMunicipio:registerDto.codigoMunicipio,
                 codigoSede:registerDto.codigoSede,
                 factorPrestacional:registerDto.factorPrestacional,
-                usuarioId:user.id
+                usuarioId:user.id,
+                tipoDocumentoEmpresa:registerDto.tipoDocumentoEmpresa,
+                nitEmpresa:registerDto.nitEmpresa,
+                nombreEmpresa:registerDto.nombreEmpresa,
+                ibc:registerDto.IBC
             });
 
             const mailTemplate:MailTemplate<WelcomeParams> = {
