@@ -152,7 +152,7 @@ export class PdfService {
         celdaConfig.text =`cargo: ${ await this.getNombreOcupacion(data.empleadoCargo) } `
         celdaConfig.posY =260;
         this.drawCell(celdaConfig);
-        celdaConfig.text = `Dependecia: preguntar a qué hace referencia`
+        celdaConfig.text = `Dependecia: `
         celdaConfig.posY =290;
         this.drawCell( celdaConfig);
     }
