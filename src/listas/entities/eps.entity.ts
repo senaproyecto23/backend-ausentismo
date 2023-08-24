@@ -11,5 +11,8 @@ export class EpsEntity{
 
     @Column()
     nombre: string;
+
+    @Column()
+    activo?:boolean;
  
 }   

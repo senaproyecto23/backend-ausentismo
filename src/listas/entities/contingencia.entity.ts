@@ -12,4 +12,7 @@ export class ContingenciaEntity{
     @Column()
     descripcion: string;
 
+    @Column()
+    activo?:boolean;
+
 }

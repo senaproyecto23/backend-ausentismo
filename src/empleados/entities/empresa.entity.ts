@@ -1,18 +1,21 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({name:'procesos'})
-export class ProcesosEntity{
+@Entity({name:'empresa'})
+export class EmpresaEntity{
 
     @PrimaryGeneratedColumn()
     id?:number;
 
     @Column()
-    codigo: number;
+    nombre: string;
 
     @Column()
-    descripcion: string;
+    nit: string;
+
+    @Column({name:'tipo_documento'})
+    tipoDocumento: string;
 
     @Column()
     activo?:boolean;
-
-}
+ 
+}   

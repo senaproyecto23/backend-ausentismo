@@ -6,14 +6,20 @@ import { EmpleadoDto } from '../dto/update-empleado.dto';
 import { UsersService } from 'src/users/services/users.service';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { RolesEnum } from 'src/auth/models/roles.enum';
+import { EmpresaEntity } from '../entities/empresa.entity';
 
 @Injectable()
 export class EmpleadosService {
 
     constructor(@InjectRepository(EmpleadoEntity)
     private empleadoRepository:Repository<EmpleadoEntity>,
+    @InjectRepository(EmpresaEntity)
+    private empresaRepository:Repository<EmpresaEntity>,
     private userService:UsersService){}
 
+    getEmpresaById(id:number):Promise<EmpresaEntity>{
+        return this.empresaRepository.findOne({where:{id,activo:true}})
+    }
 
     findAll():Promise<EmpleadoEntity[]>{
         return this.empleadoRepository.find();
@@ -25,8 +31,8 @@ export class EmpleadosService {
         return   empleado ;
     }
 
-    findByUserId(id: number): Promise<EmpleadoEntity | null> {
-        const empleado = this.empleadoRepository.findOne({where:{usuarioId:id} });
+    async findByUserId(id: number): Promise<EmpleadoEntity | null> {
+        const empleado = await this.empleadoRepository.findOne({where:{usuarioId:id} });
         if(! empleado ) throw new HttpException('Empleado no existe', HttpStatus.NOT_FOUND);
         return   empleado ;
     }

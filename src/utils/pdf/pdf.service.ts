@@ -152,7 +152,7 @@ export class PdfService {
         celdaConfig.text =`cargo: ${ await this.getNombreOcupacion(data.empleadoCargo) } `
         celdaConfig.posY =260;
         this.drawCell(celdaConfig);
-        celdaConfig.text = `Dependecia: `
+        celdaConfig.text = `Dependecia: Dirección Técnica de Planeación`
         celdaConfig.posY =290;
         this.drawCell( celdaConfig);
     }
@@ -161,7 +161,7 @@ export class PdfService {
 
     async createCausalTable(doc,data:PdfData){
         const width_c1 = 400;
-        const height_c1 =  30;
+        const height_c1 =  40;
         const posX_c1 = 159;
         const posY_c1 = 350
 
@@ -171,7 +171,7 @@ export class PdfService {
         const posX_c2 = 560;
         const posY_c2 = 350;
         const width_c2 = 79;
-        const height_c2 =  30;
+        const height_c2 =  40;
         //////////////////////
         const cellPadding = 10;
         const fontSize = 12;
@@ -183,7 +183,7 @@ export class PdfService {
             posX:posX_c1_titulo,
             posY:320,
             width:width_c1_titulo,
-            height:485,
+            height:520,
             fontSize:fontSize,
             cellPadding:cellPadding,
             font:'Helvetica-Bold',
@@ -192,11 +192,12 @@ export class PdfService {
 
         this.drawCell(celdaConfig);
         const causales:ContingenciaEntity[] = await this.contingenciaService.getAll();
+        causales.sort((obj1:ContingenciaEntity,obj2:ContingenciaEntity)=> obj1.codigo - obj2.codigo);
         
          
         causales.forEach((item,index)=>{
-            if(index == 1){
-                celdaConfig.text = `${item.descripcion}`;
+            if(index == 0){
+                celdaConfig.text = `${index +1}. ${item.descripcion}`;
                 celdaConfig.posX = posX_c1;
                 celdaConfig.posY = posY_c1;
                 celdaConfig.width=width_c1;
@@ -214,23 +215,86 @@ export class PdfService {
                 celdaConfig.align = `${(item.codigo === data.contingencia)?'center':'left'}`
                 this.drawCell( celdaConfig);
             }else{
-                celdaConfig.text =   `${item.descripcion}`;
-                celdaConfig.posX = posX_c1;
-                celdaConfig.posY = currentPosY;
-                celdaConfig.width=width_c1;
-                celdaConfig.height = height_c1;
-                
-                this.drawCell(celdaConfig);
+                if((item.codigo == 9) || (item.codigo == 10)){
+        
+                    // crear celda padre
+                    if((item.codigo == 9)){
+                        celdaConfig.text = `${index +1}. Compensatorio por trabajo adicional o suplementario.`;
+                        celdaConfig.posX = posX_c1;
+                        celdaConfig.posY = currentPosY;
+                        celdaConfig.width=width_c1 + width_c2;
+                        celdaConfig.height = height_c1 + 80;
+                        this.drawCell(celdaConfig);
+                        
+                        //crear celda hijo numero 1
 
-                celdaConfig.text = `${(item.codigo === data.contingencia)?'X':''}`;
-                celdaConfig.posX = posX_c2;
-                celdaConfig.posY = currentPosY;
-                celdaConfig.width=width_c2;
-                celdaConfig.height = height_c2;
-                celdaConfig.font = 'Helvetica';
-                celdaConfig.align = `${(item.codigo === data.contingencia)?'center':'left'}`
-                this.drawCell( celdaConfig);
-                currentPosY += height_c1
+                        //celda izquierda
+                        celdaConfig.text =   `${item.descripcion}`;
+                        celdaConfig.posX = posX_c1 +10;
+                        celdaConfig.posY = currentPosY + 35;
+                        celdaConfig.width=width_c1 - 10;
+                        celdaConfig.height = height_c1;
+                        this.drawCell(celdaConfig);
+        
+                        //celda derecha
+                        celdaConfig.text = `${(item.codigo === data.contingencia)?'X':''}`;
+                        celdaConfig.posX = posX_c2;
+                        celdaConfig.posY = currentPosY + 35;
+                        celdaConfig.width=width_c2 - 10;
+                        celdaConfig.height = height_c2;
+                        celdaConfig.font = 'Helvetica';
+                        celdaConfig.align = `${(item.codigo === data.contingencia)?'center':'left'}`
+                        this.drawCell( celdaConfig);
+                        
+                    }
+
+                    if((item.codigo == 10)){
+                        //crear celda hijo numero 2
+
+                        //celda izquierda
+                        celdaConfig.text =   `${item.descripcion}`;
+                        celdaConfig.posX = posX_c1 +10;
+                        celdaConfig.posY = currentPosY + 35 +height_c1;
+                        celdaConfig.width=width_c1 - 10;
+                        celdaConfig.height = height_c1;
+                        this.drawCell(celdaConfig);
+        
+                        //celda derecha
+                        celdaConfig.text = `${(item.codigo === data.contingencia)?'X':''}`;
+                        celdaConfig.posX = posX_c2;
+                        celdaConfig.posY = currentPosY + 35 + height_c2;
+                        celdaConfig.width=width_c2 - 10;
+                        celdaConfig.height = height_c2;
+                        celdaConfig.font = 'Helvetica';
+                        celdaConfig.align = `${(item.codigo === data.contingencia)?'center':'left'}`
+                        this.drawCell( celdaConfig);
+                        currentPosY += height_c1 + 80;
+                    }
+                    
+
+                }else{
+                    //celda otro
+                    let indexText = (item.codigo == 11 )?'':(index+1)
+                   
+                    celdaConfig.text =   `${indexText}. ${item.descripcion}`;
+                    celdaConfig.posX = posX_c1;
+                    celdaConfig.posY = currentPosY;
+                    celdaConfig.width=(item.codigo == 11)? width_c1 - 170 :  width_c1;
+                    celdaConfig.height = height_c1;
+                    this.drawCell(celdaConfig);
+    
+                    let textCelda2 =  (item.codigo == 11 )?'¿Cual?':`${(item.codigo === data.contingencia)?'X':''}`
+                    celdaConfig.text = textCelda2;
+                    celdaConfig.posX = (item.codigo == 11) ? posX_c2 - 170 :posX_c2;
+                    celdaConfig.posY = currentPosY;
+                    celdaConfig.width=(item.codigo == 11)? width_c2 + 170 :  width_c2;;
+                    celdaConfig.height = height_c2;
+                    celdaConfig.font = 'Helvetica';
+                    celdaConfig.align = `${(item.codigo === data.contingencia)?'center':'left'}`
+                    this.drawCell( celdaConfig);
+                    currentPosY += height_c1
+                }
+               
             }
         })
     }
@@ -240,7 +304,7 @@ export class PdfService {
         const width_c1 = 240;
         const height_c1 =  25;
         const posX_c1 = 159;
-        const posY_c1 = 830
+        const posY_c1 = 870
         ///////////////////////
         const posX_c2 = 400;
         const width_c2 = 240;
@@ -256,7 +320,7 @@ export class PdfService {
             doc:doc,
             text: `Fecha del permiso, estímulo o compensatorio:${this.parseDate(data.fechaInicio)}`,
             posX:posX_c1_titulo,
-            posY:805,
+            posY:840,
             width:width_c1_titulo,
             height:110,
             fontSize:fontSize,
@@ -333,9 +397,9 @@ export class PdfService {
             doc:doc,
             text:'Observaciones:',
             posX:posX_c1,
-            posY:915,
+            posY:950,
             width:width_c1,
-            height:70,
+            height:50,
             fontSize:fontSize,
             cellPadding:cellPadding,
             font:'Helvetica',
@@ -345,7 +409,7 @@ export class PdfService {
         this.drawCell(celdaConfig);
         if(data.diagnostico){
             const diagnostico = await this.getNombreDiagnostico(data.diagnostico)
-            doc.fontSize(fontSize).text(`${diagnostico}`, posX_c1 + cellPadding, 940 + cellPadding);
+            doc.fontSize(fontSize).text(`${diagnostico}`, posX_c1 + cellPadding, 965 + cellPadding);
         }
         
     }

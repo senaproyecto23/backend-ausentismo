@@ -2,9 +2,11 @@ import * as bcrypt from 'bcrypt';
 
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 
+import { ConfigService } from '@nestjs/config';
 import { EmailService } from '../../utils/email/service/email.service';
 import { EmpleadoEntity } from 'src/empleados/entities/empleado.entity';
 import { EmpleadosService } from '../../empleados/services/empleados.service';
+import { EmpresaEntity } from 'src/empleados/entities/empresa.entity';
 import { JwtService } from '@nestjs/jwt';
 import { MailTemplate } from 'src/utils/email/models/mail-template.model';
 import { RegisterDto } from '../dto/register.dto';
@@ -20,7 +22,8 @@ export class AuthService {
         private userService:UsersService,
         private empleadosService:EmpleadosService,
         private jwtService:JwtService,
-        private emailService:EmailService){}
+        private emailService:EmailService,
+        private configService: ConfigService){}
 
 
     async login(email:string, password:string):Promise<string>{
@@ -47,7 +50,8 @@ export class AuthService {
                 password: await this.encriptPassword(registerDto.password),
                 rol: registerDto.rol
             })
-    
+
+        
             const empleado = await this.empleadosService.save({
                 nombre:registerDto.nombre,
                 apellido:registerDto.apellido,
@@ -64,9 +68,6 @@ export class AuthService {
                 codigoSede:registerDto.codigoSede,
                 factorPrestacional:registerDto.factorPrestacional,
                 usuarioId:user.id,
-                tipoDocumentoEmpresa:registerDto.tipoDocumentoEmpresa,
-                nitEmpresa:registerDto.nitEmpresa,
-                nombreEmpresa:registerDto.nombreEmpresa,
                 ibc:registerDto.IBC
             });
 

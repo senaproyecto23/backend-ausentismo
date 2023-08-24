@@ -12,4 +12,7 @@ export class DiagnosticoEntity{
     @Column()
     descripcion: string;
 
+    @Column()
+    activo?:boolean;
+
 }

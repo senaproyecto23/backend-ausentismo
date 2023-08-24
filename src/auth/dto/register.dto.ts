@@ -16,8 +16,5 @@ export interface RegisterDto{
     codigoMunicipio:number;
     codigoSede:number;
     factorPrestacional?:number;
-    tipoDocumentoEmpresa?:number;
-    nitEmpresa?:string;
-    nombreEmpresa?:string;
     IBC?:number;
 }
