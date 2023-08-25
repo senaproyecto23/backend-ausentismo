@@ -38,7 +38,14 @@ export class EpsService {
     async actualizar(listaDTO:ListaDto):Promise<boolean>{
         const eps =  await this.getById(listaDTO.id);
         if(! eps)  throw new HttpException('No existe la eps', HttpStatus.NOT_FOUND);
-        const result = await this.epsRepository.update(eps.id,{nombre:listaDTO.descripcion})
+
+        const epsCodigo =  await this.getByCode(listaDTO.codigo);
+        if(epsCodigo) throw new HttpException('El codígo ya existe', HttpStatus.BAD_REQUEST);
+
+        const result = await this.epsRepository.update(eps.id,{
+            codigo:listaDTO.codigo.toString(),
+            nombre:listaDTO.descripcion
+        })
         if (result.affected < 0)throw new HttpException('Ocurrió un error intenta más tarde', HttpStatus.INTERNAL_SERVER_ERROR);                                
         return true; 
     }

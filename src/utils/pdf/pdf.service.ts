@@ -35,6 +35,7 @@ export class PdfService {
         private diagnosticoService:DiagnosticoService,
         private procesoService:ProcesosService){}
 
+    
     async generate(data:PdfData):Promise<any>{
 
         try {
@@ -63,7 +64,7 @@ export class PdfService {
        
         let celdaConfig:CeldaConfig = {
             doc:doc,
-            text: 'REGISTRO SOLICITUD DE PERMISO',
+            text: `SECRETARIA ADMINISTRATIVA Y FINANCIERA\n PROCESO: ${await this.getNombreProceso(data.codigoProceso)}`,
             posX:250,
             posY:20,
             width:400,
@@ -77,21 +78,21 @@ export class PdfService {
         this.drawCellWithImage(doc, 150, 20, width, height);
 
         this.drawCell( celdaConfig);
-        celdaConfig.text = `Proceso:\n ${await this.getNombreProceso(data.codigoProceso)}`;
+        celdaConfig.text = `SOLICITUD DE PERMISO`;
         celdaConfig.posX = 250;
         celdaConfig.posY = 60;
         celdaConfig.width = 180;
         celdaConfig.height = 50;
         celdaConfig.align = 'left';
         this.drawCell(celdaConfig);
-        celdaConfig.text = 'Código: RGC-09';
+        celdaConfig.text = 'CODIGO: F9-PM-GH-03';
         celdaConfig.posX = 430;
         celdaConfig.posY = 60;
         celdaConfig.width = 120;
         celdaConfig.height = 50;
         celdaConfig.align = 'left';
         this.drawCell(celdaConfig);
-        celdaConfig.text = 'Versión: 01';
+        celdaConfig.text = `FECHA DE APROBACION:${this.toParseDate(data.fechaAprobacion)}`;
         celdaConfig.posX = 550;
         celdaConfig.posY = 60;
         celdaConfig.width = 100;
@@ -464,6 +465,13 @@ export class PdfService {
 
     parseDate(fecha1:Date):string{
         return fecha1.toLocaleDateString('es-CO',{weekday:"long", year:"numeric", month:"long", day:"numeric"});
+    }
+
+    toParseDate(date:Date){
+        const fecha = moment(date);
+        // Formatear la fecha con el patrón "dd-MM-yyyy"
+        const fechaFormateada = fecha.format('DD-MM-YYYY');
+        return fechaFormateada;
     }
 
     async getNombreOcupacion(code:number){

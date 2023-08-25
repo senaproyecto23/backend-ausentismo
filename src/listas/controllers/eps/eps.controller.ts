@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ListaDto } from 'src/listas/dto/lista.dto';
 
 import { EpsService } from 'src/listas/services/eps/eps.service';
@@ -13,6 +13,12 @@ export class EpsController {
     async getAll(){
         return await this.epsService.getAll();
     }
+
+     // @UseGuards(AuthGuard)
+     @Get('id/:id')
+     async getById(@Param() params: any){
+         return await this.epsService.getById(params.id);
+     }
 
   //  @UseGuards(AuthGuard)
   //  @UseGuards(RoleGuard)

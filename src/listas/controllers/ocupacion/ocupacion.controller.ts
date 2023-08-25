@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ListaDto } from 'src/listas/dto/lista.dto';
 
 import { OcupacionService } from 'src/listas/services/ocupacion/ocupacion.service';
@@ -12,6 +12,12 @@ export class OcupacionController {
     @Get()
     async getAll(){
         return await this.ocupacionService.getAll();
+    }
+
+    //  @UseGuards(AuthGuard)
+    @Get('id/:id')
+    async getById(@Param() params: any){
+        return await this.ocupacionService.getById(params.id);
     }
 
 

@@ -24,6 +24,12 @@ export class ContingenciaController {
         return await this.contingenciaService.getByCode(params.codigo);
     }
 
+    @UseGuards(AuthGuard)
+    @Get('id/:id')
+    async getByid(@Param() params: any){
+        return await this.contingenciaService.getById(params.id);
+    }
+
   //  @UseGuards(AuthGuard)
   //  @UseGuards(RoleGuard)
   //  @Roles(RolesEnum.ADMIN)
